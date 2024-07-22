@@ -11,3 +11,4 @@ runs:
         INPUT_RYE_VERSION: ${{ inputs.rye-version }}
     - run: |
         curl -sSf https://rye.astral.sh/get | RYE_VERSION="$INPUT_RYE_VERSION" RYE_INSTALL_OPTION="--yes" bash
+      shell: bash
