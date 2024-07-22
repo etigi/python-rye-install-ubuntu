@@ -4,13 +4,23 @@ inputs:
   rye-version:
     description: The version of `Rye` to install
     default: "latest"
+  python-version:
+    description: The version of Python to install along with Rye.
+    default: "3.12"
 runs:
   using: "composite"
   steps:
-    - env:
+    - name: Install Rye
+      env:
         RYE_VERSION: "${{ inputs.rye-version }}"
+        RYE_TOOLCHAIN: "${{ inputs.python-version }}"
+        RYE_TOOLCHAIN_VERSION: "${{ inputs.python-version }}"
         RYE_INSTALL_OPTION: "--yes"
-    - run: |
-        curl -sSf https://rye.astral.sh/get
-        source $HOME/.rye/env
       shell: bash
+      run: |
+        curl -sSf https://rye.astral.sh/get | bash
+        echo "source $HOME/.rye/env" >> $HOME/.profile
+        source $HOME/.profile
+        rye --version
+        echo "PATH=$PATH" >> "$GITHUB_ENV"
+        echo "RYE_NO_AUTO_INSTALL=1" >> "$GITHUB_ENV"
