@@ -1,0 +1,13 @@
+name: python-rye-install-ubuntu
+description: Installs [Rye](rye.astral.sh) on Github Ubuntu Runners.
+inputs:
+  rye-version:
+    description: The version of `Rye` to install
+    default: 'latest'
+runs:
+  using: 'composite'
+  steps:
+    - env:
+        INPUT_RYE_VERSION: ${{ inputs.rye-version }}
+    - run: |
+        curl -sSf https://rye.astral.sh/get | RYE_VERSION="$INPUT_RYE_VERSION" RYE_INSTALL_OPTION="--yes" bash
